@@ -13,7 +13,7 @@ import (
 	"log"
 	"net"
 
-	pb "192.168.1.153/blue-box/blueboxproto"
+	pb "github.com/agrimel-0/rio-grpc"
 	"google.golang.org/grpc"
 )
 
@@ -23,7 +23,7 @@ import (
 
 // Server struct
 type server struct {
-	pb.UnimplementedBlueBoxServer
+	pb.UnimplementedRioServer
 
 	exportedPins []*ioPin // Slice containing the exported pins
 }
@@ -38,13 +38,13 @@ func (s *server) SetGPIObyOffset(ctx context.Context, lineOffset *pb.GPIOselecte
 	// Select the matching exported io
 	ioSelected, err := s.findPinByOffset(offsetSelected)
 	if err != nil {
-		return &pb.ServerResponse{ErrorString: "error found"}, err
+		return &pb.ServerResponse{ResponseString: "error found"}, err
 	}
 
 	// Set the line value. Should it throw an error if you are setting a value that it's already set at?
 	ioSelected.line.SetValue(int(lineOffset.GetGPIOLineValue()))
 
-	return &pb.ServerResponse{ErrorString: "none"}, nil
+	return &pb.ServerResponse{ResponseString: "none"}, nil
 }
 
 // gRPC call for setting IO pin by alias. Would be cool to be able to request a list of aliases from a client
@@ -57,13 +57,13 @@ func (s *server) SetGPIObyAlias(ctx context.Context, lineAlias *pb.GPIOselected)
 	// Select the matching exported io
 	ioSelected, err := s.findPinByAlias(aliasSelected)
 	if err != nil {
-		return &pb.ServerResponse{ErrorString: "error found"}, err
+		return &pb.ServerResponse{ResponseString: "error found"}, err
 	}
 
 	// Set the line value. Should it throw an error if you are setting a value that it's already set at?
 	ioSelected.line.SetValue(int(lineAlias.GetGPIOLineValue()))
 
-	return &pb.ServerResponse{ErrorString: "none"}, nil
+	return &pb.ServerResponse{ResponseString: "none"}, nil
 }
 
 // find the matching pin in the exported pins when searching by offset value
@@ -117,7 +117,7 @@ func StartServer(port int) {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterBlueBoxServer(s, &server) // instead opf &server{} we use &server since it is already initialized
+	pb.RegisterRioServer(s, &server) // instead opf &server{} we use &server since it is already initialized
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

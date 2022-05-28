@@ -7,7 +7,7 @@ package cmd
 import (
 	"fmt"
 
-	"192.168.1.153/blue-box/bbsd/iorpc"
+	"github.com/agrimel-0/rio-server/iorpc"
 	"github.com/spf13/cobra"
 )
 
