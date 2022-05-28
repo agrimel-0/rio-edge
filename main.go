@@ -5,7 +5,7 @@ Copyright © 2022 Federico Giovine <giovine.federico@gmail.com>
 package main
 
 import (
-	"192.168.1.153/blue-box/bbsd/cmd"
+	"github.com/agrimel-0/rio-server/cmd"
 )
 
 func main() {
