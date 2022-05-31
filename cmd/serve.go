@@ -1,31 +1,37 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
 	"fmt"
 
-	"github.com/agrimel-0/rio-server/iorpc"
+	"github.com/agrimel-0/rio-server/server"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
-
-const PORT = 50051 // #3 esentially cdonstants from config files must be at this level!
 
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Start serving the remote-io server",
+	Long: `Start serving the remote-io server on your current device.
+	Serve uses the config file to automatically initialize the required pins and port.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("serve called")
-		iorpc.StartServer(PORT)
+		// get the necessary values from the config file
+		if err := viper.ReadInConfig(); err != nil {
+			return
+		}
+
+		var config server.Config
+
+		if err := viper.Unmarshal(&config); err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		err := server.Start(config)
+		if err != nil {
+			panic(err)
+		}
+
 	},
 }
 

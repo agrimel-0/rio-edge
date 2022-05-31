@@ -1,0 +1,19 @@
+# Server related config
+server:
+    port: 51232
+    alias: testserver
+
+# Hardware IO related config
+pins:
+  - io:
+      gpiochip: gpiochip0
+      lineOffset: 5
+      alias: GPIO5
+      value: 0
+      output: false
+  - io:
+      gpiochip: gpiochip0
+      lineOffset: 11
+      alias: pin1
+      value: 1
+      output: true
