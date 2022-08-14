@@ -1,10 +1,10 @@
 module github.com/agrimel-0/rio-server
 
-go 1.18
+go 1.19
 
-require google.golang.org/grpc v1.46.2
+require google.golang.org/grpc v1.48.0
 
-require github.com/agrimel-0/rio-grpc v0.0.0-20220528200411-2084cb44d425
+require github.com/agrimel-0/rio-grpc v0.0.0-20220613011720-8c316a2da5c1
 
 require (
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
@@ -29,9 +29,9 @@ require (
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.12.0
 	github.com/warthog618/gpiod v0.8.0
-	golang.org/x/net v0.0.0-20220526153639-5463443f8c37 // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
+	golang.org/x/net v0.0.0-20220812174116-3211cb980234 // indirect
+	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/genproto v0.0.0-20220527130721-00d5c0f3be58 // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
+	google.golang.org/genproto v0.0.0-20220812140447-cec7f5303424 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 )
