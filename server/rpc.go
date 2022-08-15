@@ -8,7 +8,7 @@ import (
 	pb "github.com/agrimel-0/rio-grpc"
 )
 
-// // gRPC call for setting IO pin by offset
+// SetGPIObyOffset gRPC call for setting IO pin by offset
 func (s *server) SetGPIObyOffset(ctx context.Context, in *pb.GPIOselected) (*pb.ServerResponse, error) {
 	offsetSelected := in.GPIOLineOffset
 
@@ -26,7 +26,7 @@ func (s *server) SetGPIObyOffset(ctx context.Context, in *pb.GPIOselected) (*pb.
 	return &pb.ServerResponse{ResponseString: "none"}, nil
 }
 
-// gRPC call for setting IO pin by alias. Would be cool to be able to request a list of aliases from a client
+// SetGPIObyAlias gRPC call for setting IO pin by alias. Would be cool to be able to request a list of aliases from a client
 func (s *server) SetGPIObyAlias(ctx context.Context, in *pb.GPIOselected) (*pb.ServerResponse, error) {
 
 	aliasSelected := in.GetGPIOLineAlias()
@@ -43,6 +43,27 @@ func (s *server) SetGPIObyAlias(ctx context.Context, in *pb.GPIOselected) (*pb.S
 	ioSelected.Line.SetValue(int(in.GetGPIOLineValue()))
 
 	return &pb.ServerResponse{ResponseString: "none"}, nil
+}
+
+// GetGPIOList gRPC call for listing IO pins.
+func (s *server) GetGPIOList(in *pb.ClientRequest, stream pb.Rio_GetGPIOListServer) error {
+	for _, x := range s.exportedPins {
+
+		// go from x (type IOpin) to gpioToStream (GPIOselected) ...
+		gpioToStream := pb.GPIOselected{
+			GPIOLineOffset: int32(x.Line.Offset()),
+			GPIOLineValue:  int32(x.Value),
+			GPIOLineAlias:  x.Alias,
+			GPIOOutput:     x.AsOutput,
+			GPIOChip:       x.GpioChip,
+		}
+
+		err := stream.Send(&gpioToStream)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // find the matching pin in the exported pins when searching by offset value
