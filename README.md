@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://agrimel.org/wp-content/uploads/2022/07/Agrimel-Inc.-Main-Logo-2000x1500_cropped_white-337x68.png)](https://agrimel.org/" />
+    <img src="https://agrimel.org/wp-content/uploads/2022/07/Agrimel-Inc.-Main-Logo-2000x1500_cropped_white-337x68.png" width="337" height="68"/>
 </p>   
 
 <p align="center">
