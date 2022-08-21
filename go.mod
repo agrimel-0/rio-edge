@@ -4,7 +4,10 @@ go 1.19
 
 require google.golang.org/grpc v1.48.0
 
-require github.com/agrimel-0/rio-grpc v0.0.0-20220613011720-8c316a2da5c1
+require (
+	github.com/agrimel-0/rio-grpc v0.0.0-20220613011720-8c316a2da5c1
+	github.com/sirupsen/logrus v1.9.0
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.5.4 // indirect

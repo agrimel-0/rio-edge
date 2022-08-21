@@ -3,16 +3,14 @@ package server
 import (
 	"context"
 	"errors"
-	"log"
 
 	pb "github.com/agrimel-0/rio-grpc"
+	"github.com/sirupsen/logrus"
 )
 
 // SetGPIObyOffset gRPC call for setting IO pin by offset
 func (s *server) SetGPIObyOffset(ctx context.Context, in *pb.GPIOselected) (*pb.ServerResponse, error) {
 	offsetSelected := in.GPIOLineOffset
-
-	log.Printf("setting '%s' GPIO by offset %d  with value %d\n", in.GPIOLineAlias, offsetSelected, in.GetGPIOLineValue())
 
 	// Select the matching exported io
 	ioSelected, err := s.findPinByOffset(offsetSelected)
@@ -20,8 +18,14 @@ func (s *server) SetGPIObyOffset(ctx context.Context, in *pb.GPIOselected) (*pb.
 		return &pb.ServerResponse{ResponseString: "error found"}, err
 	}
 
+	logrus.Infof("setting '%s' GPIO by offset %d  with value %d\n", ioSelected.Alias, ioSelected.Line.Offset(), in.GetGPIOLineValue())
+
 	// Set the line value. Should it throw an error if you are setting a value that it's already set at?
-	ioSelected.Line.SetValue(int(in.GetGPIOLineValue()))
+	err = SetLineValue(*ioSelected.Line, in.GPIOLineValue)
+	if err != nil {
+		logrus.Errorf("error setting by offset", err)
+		return &pb.ServerResponse{ResponseString: err.Error()}, err
+	}
 
 	return &pb.ServerResponse{ResponseString: "none"}, nil
 }
@@ -31,16 +35,20 @@ func (s *server) SetGPIObyAlias(ctx context.Context, in *pb.GPIOselected) (*pb.S
 
 	aliasSelected := in.GetGPIOLineAlias()
 
-	log.Printf("setting '%s' GPIO by alias %d  with value %d\n", in.GPIOLineAlias, in.GetGPIOLineOffset(), in.GetGPIOLineValue())
-
 	// Select the matching exported io
 	ioSelected, err := s.findPinByAlias(aliasSelected)
 	if err != nil {
-		return &pb.ServerResponse{ResponseString: "error found"}, err
+		return &pb.ServerResponse{ResponseString: err.Error()}, err
 	}
 
+	logrus.Infof("setting '%s' GPIO by alias %d  with value %d\n", ioSelected.Alias, ioSelected.Line.Offset(), in.GetGPIOLineValue())
+
 	// Set the line value. Should it throw an error if you are setting a value that it's already set at?
-	ioSelected.Line.SetValue(int(in.GetGPIOLineValue()))
+	err = SetLineValue(*ioSelected.Line, in.GPIOLineValue)
+	if err != nil {
+		logrus.Errorf("error setting by alias", err)
+		return &pb.ServerResponse{ResponseString: err.Error()}, err
+	}
 
 	return &pb.ServerResponse{ResponseString: "none"}, nil
 }
