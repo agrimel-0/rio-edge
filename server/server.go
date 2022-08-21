@@ -2,10 +2,10 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net"
 
 	pb "github.com/agrimel-0/rio-grpc"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
 
@@ -45,10 +45,15 @@ type server struct {
 // Start the server
 func Start(serverconfig Config) error {
 
+	logrus.Info("starting server...")
+
 	ioPins, errs := IoFromConfig(serverconfig.PinList)
 	for _, err := range errs {
-		log.Printf("io setup error: %v", err)
+		// log.Printf("io setup error: %v", err)
+		logrus.Warning("io setup error: %v", err)
 	}
+
+	logrus.Debugf("pins exported with %d errors", len(errs))
 
 	server := server{
 		exportedPins: ioPins,
@@ -58,17 +63,21 @@ func Start(serverconfig Config) error {
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", server.serverPort))
 	if err != nil {
+		logrus.Error("error listening: %v", err)
 		return err
 	}
 	s := grpc.NewServer()
 
 	server.grpcInstance = s
 
+	logrus.Debug("new grpc server created")
+
 	pb.RegisterRioServer(server.grpcInstance, &server)
-	log.Printf("network %v\n", lis.Addr().Network())
-	log.Printf("%s listening at %v", server.serverAlias, lis.Addr())
+	logrus.Infof("network %v\n", lis.Addr().Network())
+	logrus.Infof("%s listening at %v", server.serverAlias, lis.Addr().String())
 
 	if err := server.grpcInstance.Serve(lis); err != nil {
+		logrus.Error("error serving grpc instance: %v", err)
 		return err
 	}
 
