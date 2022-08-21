@@ -33,6 +33,13 @@ func IoFromConfig(pinMap []map[string]Pins) ([]*IoPin, []error) {
 	return ioPins, errorList
 }
 
+func SetLineValue(line gpiod.Line, value int32) error {
+
+	err := line.SetValue(int(value))
+
+	return err
+}
+
 // Initialize a new pin. Requires gpiochip, line offset, default value, and an alias.
 func newPin(pinstStat Pins) (*IoPin, error) {
 
@@ -40,7 +47,7 @@ func newPin(pinstStat Pins) (*IoPin, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer newLine.Close()
+	// defer newLine.Close()
 
 	io := IoPin{
 		Line:     newLine,
