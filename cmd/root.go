@@ -2,19 +2,24 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"os"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
+// The config file value
 var cfgFile string
+
+// The verbose flag value
+var v string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "rio-server",
 	Short: "A simple app to help people!",
-	Long:  ``,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -44,6 +49,24 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "./config/.server.config.yaml", "config file")
+	rootCmd.PersistentFlags().StringVarP(&v, "verbosity", "v", logrus.WarnLevel.String(), "Log level (debug, info, warn, error, fatal, panic")
+	rootCmd.PersistentPreRunE = func(cmd *cobra.Command, args []string) error {
+		if err := setUpLogs(os.Stdout, v); err != nil {
+			return err
+		}
+		return nil
+	}
+}
+
+// setUpLogs set the log output ans the log level
+func setUpLogs(out io.Writer, level string) error {
+	logrus.SetOutput(out)
+	lvl, err := logrus.ParseLevel(level)
+	if err != nil {
+		return err
+	}
+	logrus.SetLevel(lvl)
+	return nil
 }
 
 func initConfig() {
