@@ -55,6 +55,7 @@ func (s *server) SetGPIObyAlias(ctx context.Context, in *pb.GPIOselected) (*pb.S
 
 // GetGPIOList gRPC call for listing IO pins.
 func (s *server) GetGPIOList(in *pb.ClientRequest, stream pb.Rio_GetGPIOListServer) error {
+
 	for _, x := range s.exportedPins {
 
 		// go from x (type IOpin) to gpioToStream (GPIOselected) ...
@@ -65,6 +66,8 @@ func (s *server) GetGPIOList(in *pb.ClientRequest, stream pb.Rio_GetGPIOListServ
 			GPIOOutput:     x.AsOutput,
 			GPIOChip:       x.GpioChip,
 		}
+
+		logrus.Debugf("sending: %v\n", x)
 
 		err := stream.Send(&gpioToStream)
 		if err != nil {
