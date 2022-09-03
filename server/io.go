@@ -54,6 +54,7 @@ func newPin(pinstStat Pins) (*IoPin, error) {
 		Alias:    pinstStat.Alias,
 		Value:    pinstStat.Value,
 		AsOutput: pinstStat.Output,
+		GpioChip: pinstStat.GpioChip,
 	}
 
 	if io.AsOutput {
