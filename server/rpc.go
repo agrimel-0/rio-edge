@@ -21,7 +21,8 @@ func (s *server) SetGPIObyOffset(ctx context.Context, in *pb.GPIOselected) (*pb.
 	logrus.Infof("setting '%s' GPIO by offset %d  with value %d\n", ioSelected.Alias, ioSelected.Line.Offset(), in.GetGPIOLineValue())
 
 	// Set the line value. Should it throw an error if you are setting a value that it's already set at?
-	err = SetLineValue(*ioSelected.Line, in.GPIOLineValue)
+	// err = SetLineValue(*ioSelected.Line, in.GPIOLineValue)
+	err = ioSelected.SetLineValue(in.GPIOLineValue)
 	if err != nil {
 		logrus.Errorf("error setting by offset", err)
 		return &pb.ServerResponse{ResponseString: err.Error()}, err
@@ -44,7 +45,8 @@ func (s *server) SetGPIObyAlias(ctx context.Context, in *pb.GPIOselected) (*pb.S
 	logrus.Infof("setting '%s' GPIO by alias %d  with value %d\n", ioSelected.Alias, ioSelected.Line.Offset(), in.GetGPIOLineValue())
 
 	// Set the line value. Should it throw an error if you are setting a value that it's already set at?
-	err = SetLineValue(*ioSelected.Line, in.GPIOLineValue)
+	// err = SetLineValue(*ioSelected.Line, in.GPIOLineValue)
+	err = ioSelected.SetLineValue(in.GPIOLineValue)
 	if err != nil {
 		logrus.Errorf("error setting by alias", err)
 		return &pb.ServerResponse{ResponseString: err.Error()}, err
