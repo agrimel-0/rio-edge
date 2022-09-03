@@ -58,6 +58,12 @@ func (s *server) GetGPIOList(in *pb.ClientRequest, stream pb.Rio_GetGPIOListServ
 
 	for _, x := range s.exportedPins {
 
+		logrus.Debugf("line: %d", x.Line.Offset())
+		logrus.Debugf("value: %d", x.Value)
+		logrus.Debugf("alias: %s", x.Alias)
+		logrus.Debugf("output: %v", x.AsOutput)
+		logrus.Debugf("gpiochip: %s", x.GpioChip)
+
 		// go from x (type IOpin) to gpioToStream (GPIOselected) ...
 		gpioToStream := pb.GPIOselected{
 			GPIOLineOffset: int32(x.Line.Offset()),
@@ -67,7 +73,7 @@ func (s *server) GetGPIOList(in *pb.ClientRequest, stream pb.Rio_GetGPIOListServ
 			GPIOChip:       x.GpioChip,
 		}
 
-		logrus.Debugf("sending: %v\n", x)
+		logrus.Debugf("sending: %v\n", gpioToStream)
 
 		err := stream.Send(&gpioToStream)
 		if err != nil {
