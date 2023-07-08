@@ -9,8 +9,6 @@
     <img src="https://img.shields.io/github/license/SirFed/rio-server?style=for-the-badge" alt="license">
     <a href="https://discord.gg/E5XaRkMamn" target="_blank">
     <img src="https://img.shields.io/badge/Agrimel-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="discord">
-    <a href="https://donorbox.org/agrimel-inc" target="_blank">
-    <img src="https://img.shields.io/badge/donate-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA" alt="donate"></a>
 </p>
 
 # rio-server
