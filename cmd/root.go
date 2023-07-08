@@ -48,7 +48,7 @@ func init() {
 	// Cobra && Viper config handling
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "./config/.server.config.yaml", "config file")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "./config/.edge.config.yaml", "config file")
 	rootCmd.PersistentFlags().StringVarP(&v, "verbosity", "v", logrus.WarnLevel.String(), "Log level (debug, info, warn, error, fatal, panic")
 	rootCmd.PersistentPreRunE = func(cmd *cobra.Command, args []string) error {
 		if err := setUpLogs(os.Stdout, v); err != nil {
