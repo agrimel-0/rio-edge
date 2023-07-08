@@ -11,8 +11,8 @@
     <img src="https://img.shields.io/badge/Agrimel-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="discord">
 </p>
 
-# rio-server
-RIO stands for Remote-IO. This rio-grpc repository shows a fully fledged edge server in accordance to the AGR-101 standard.
+# rio-edge
+RIO stands for Remote-IO. This rio-grpc repository shows a fully fledged edge device tool in accordance to the AGR-101 standard.
 
 This is currently in alpha stage!
 
@@ -26,14 +26,14 @@ Installation really depends on the hardware you are building for. You will have 
 
 For a Raspberry Pi 4 running a 32 bit install of Arch Linux Arm this was proven to work:
 ```
-env GOOS=linux GOARCH=arm GOARM=7 go build -o bin/server-arm64 main.go
+env GOOS=linux GOARCH=arm GOARM=7 go build -o bin/edge-arm64 main.go
 ```
 
 ## Configuration
 
 Configuration is handled by a `.yaml` file. In this repo you can find a sample configuration file in the directory [config](./config/). There is also a configuration for the Raspberry Pi 4, and as project progresses more and more prebuilt configuration files will be added!
 
-The sample configuration file `.server.config.yaml` is shown below:
+The sample configuration file `.edge.config.yaml` is shown below:
 
 ```yaml
 # Server related config
@@ -58,7 +58,7 @@ pins:
 
 ```
 
-The `server:` paragraph defines the various settings for the server.
+The `server:` paragraph defines the various settings for the edge server.
  - **port**: is the network port over which the gRPC service will be served on.
  - **alias**: is a friendly name you want your gRPC service to go by.
 
@@ -72,28 +72,28 @@ The `pins:` paragraphs is composed of several `io:` entries. Each of these are h
 ## Usage
 ```
 Usage:
-  rio-server [command]
+  rio-edge [command]
 join us
-  serve       Start serving the remote-io server
+  serve       Start serving the remote-io edge server
 
 Flags:
-  -c, --config string      config file (default "./config/.server.config.yaml")
-  -h, --help               help for rio-server
+  -c, --config string      config file (default "./config/.edge.config.yaml")
+  -h, --help               help for rio-edge
   -t, --toggle             Help message for toggle
   -v, --verbosity string   Log level (debug, info, warn, error, fatal, panic (default "warning")
 
-Use "rio-server [command] --help" for more information about a command.
+Use "rio-edge [command] --help" for more information about a command.
 ```
 
 Serve command:
 ```
-  rio-server serve [flags]
+  rio-edge serve [flags]
 
 Flags:
   -h, --help   help for serve
 
 Global Flags:
-  -c, --config string      config file (default "./config/.server.config.yaml")
+  -c, --config string      config file (default "./config/.edge.config.yaml")
   -v, --verbosity string   Log level (debug, info, warn, error, fatal, panic (default "warning")
 ```
 
