@@ -11,8 +11,8 @@ import (
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "Start serving the remote-io server",
-	Long: `Start serving the remote-io server on your current device.
+	Short: "Start serving the remote-io edge server",
+	Long: `Start serving the remote-io edge server on your current device.
 	Serve uses the config file to automatically initialize the required pins and port.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// get the necessary values from the config file
